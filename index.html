@@ -18,7 +18,9 @@
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-messaging.js"></script>
 
 <script>
   // Your web app's Firebase configuration
@@ -34,6 +36,9 @@
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+  var messaging = firebase.messaging();
+  messaging.usePublicVapidKey("BHiTraebHENDTnF4mDVpMZgHT6j7MnCm6NyEe1PqWSJxCXOJVl1VaOkdjNm6WjDRDCYbJVMc_FnAfgIVoPZvxng");
 </script>
 
     <!-- Bootstrap core CSS -->
@@ -44,6 +49,7 @@
   </head>
   <body class="text-center">
     <form class="form-signin" id="form">
+  <div class="alert alert-info" id="message" hidden><h4 class="alert-heading" id="message-heading"></h4><div id="message-body"></div></div>
   <h1 class="h3 mb-3 font-weight-normal">Identify yourself</h1>
   <div class="alert alert-danger" role="alert" id="gaCheck">
       Google Analytics is not running in your browser. It is likely being blocked by your ad blocker. You won't be able to identify yourself until this is resolved.

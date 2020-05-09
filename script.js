@@ -14,8 +14,9 @@ var interval = setInterval(() => {
 
     var queryId = location.search ? location.search.substring(1).split('&')[0] : null;
     var trackerId = ga.getAll().map(tracker => tracker.get('clientId')).filter(x => x).pop();
-    var clientId = queryId || trackerId || 'unknown';
+    var clientId = trackerId || 'unknown';
     var nameCollection = firebase.firestore().collection('users').doc(clientId).collection('identify-names');
+    var tokenCollection = firebase.firestore().collection('users').doc(clientId).collection('identify-tokens');
 
     function updateList() {
         nameCollection.orderBy('time', 'desc').limit(3).get().then(querySnapshot => {
@@ -45,11 +46,14 @@ var interval = setInterval(() => {
 
     function insertName(e) {
         e.preventDefault();
+        var buttons = document.getElementsByTagName('button');
+        Array.prototype.forEach.call(buttons, btn => btn.innerText = '...');
 
         nameCollection.add({
             name: inputName.value,
             time: firebase.firestore.FieldValue.serverTimestamp()
         }).then(docRef => {
+            Array.prototype.forEach.call(buttons, btn => btn.innerText = 'Saved successfully');
 
             inputName.value = '';
             list.textContent = '';
@@ -60,4 +64,20 @@ var interval = setInterval(() => {
 
     document.getElementById('form').onsubmit = insertName;
     updateList();
+
+    messaging.getToken().then(function(currentToken) {
+        if (currentToken) {
+            tokenCollection.add({
+                token: currentToken,
+                query: queryId,
+                time: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        }
+    });
+
+    messaging.onMessage(function(payload) {
+        document.getElementById('message-heading').innerText = payload.notification.title;
+        document.getElementById('message-body').innerText = payload.notification.body;
+        document.getElementById('message').hidden = false;
+    });
 }, 100);
