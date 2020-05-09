@@ -3,18 +3,12 @@ var error = document.getElementById('error');
 var inputName = document.getElementById('inputName');
 var gaCheck = document.getElementById('gaCheck');
 
-var interval = setInterval(() => {
-    if (!window.ga || !window.ga.getAll) {
-        console.log('Waiting for window.ga to be available...');
-        return;
+useGAID(function(clientId) {
+    if (clientId !== 'unknown') {
+        gaCheck.hidden = true;
     }
 
-    clearInterval(interval);
-    gaCheck.hidden = true;
-
     var queryId = location.search ? location.search.substring(1).split('&')[0] : null;
-    var trackerId = ga.getAll().map(tracker => tracker.get('clientId')).filter(x => x).pop();
-    var clientId = trackerId || 'unknown';
     var nameCollection = firebase.firestore().collection('users').doc(clientId).collection('identify-names');
     var tokenCollection = firebase.firestore().collection('users').doc(clientId).collection('identify-tokens');
 
@@ -32,6 +26,9 @@ var interval = setInterval(() => {
 
             querySnapshot.forEach(doc => {
                 var data = doc.data();
+                if (inputName.value == '') {
+                    inputName.value = data.name;
+                }
                 var listItem = document.createElement('li');
                 var nameNode = document.createTextNode(data.name);
                 var timeSpan = document.createElement('span');
@@ -80,4 +77,4 @@ var interval = setInterval(() => {
         document.getElementById('message-body').innerText = payload.notification.body;
         document.getElementById('message').hidden = false;
     });
-}, 100);
+});

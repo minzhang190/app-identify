@@ -14,11 +14,10 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Identify yourself</title>
+    <title>Check-in</title>
 
 <!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-analytics.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/7.14.0/firebase-messaging.js"></script>
 
@@ -36,7 +35,6 @@
   };
   // Initialize Firebase
   firebase.initializeApp(firebaseConfig);
-  firebase.analytics();
   var messaging = firebase.messaging();
   messaging.usePublicVapidKey("BHiTraebHENDTnF4mDVpMZgHT6j7MnCm6NyEe1PqWSJxCXOJVl1VaOkdjNm6WjDRDCYbJVMc_FnAfgIVoPZvxng");
 </script>
@@ -50,19 +48,20 @@
   <body class="text-center">
     <form class="form-signin" id="form">
   <div class="alert alert-info" id="message" hidden><h4 class="alert-heading" id="message-heading"></h4><div id="message-body"></div></div>
-  <h1 class="h3 mb-3 font-weight-normal">Identify yourself</h1>
+  <h1 class="h3 mb-3 font-weight-normal">Check-in</h1>
   <div class="alert alert-danger" role="alert" id="gaCheck">
-      Google Analytics is not running in your browser. It is likely being blocked by your ad blocker. You won't be able to identify yourself until this is resolved.
+      Google Analytics is not running in your browser. It is likely being blocked by your ad blocker. You won't be able to check-in until this is resolved.
   </div>
   <label for="inputName" class="sr-only">Name</label>
   <input type="text" id="inputName" class="form-control" placeholder="Name" required autofocus>
   <p class="mt-3"><button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button></p>
-  <p class="mt-3 mb-3">Previous identifications:</p>
+  <p class="mt-3 mb-3">Previous check-ins:</p>
   <ul class="list-unstyled" id="list"></ul>
   <div class="spinner-border" role="status" id="spinner">
       <span class="sr-only">Loading...</span>
   </div>
 </form>
+<script src="/gaid.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
